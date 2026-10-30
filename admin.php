@@ -21,6 +21,7 @@ $result = mysqli_query($conn, $sql);
   <div>
     <a class="btn" href="product_create.php">+ เพิ่มสินค้า</a>
     <a href="index.php">หน้าแรก</a>
+    <a href="manage_admins.php">จัดการแอดมิน</a>
     <form method="post" action="logout.php" style="display:inline">
       <input type="hidden" name="csrf" value="<?= esc(csrf_token()) ?>">
       <button class="btn" type="submit">Logout</button>
