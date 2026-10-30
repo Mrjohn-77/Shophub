@@ -12,6 +12,7 @@ while($row=mysqli_fetch_assoc($result)){ $grouped[$row['category']][]=$row; $tot
 <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SHOPHUB</title><link rel="stylesheet" href="assets/css/style.css"></head><body>
 <div class="container">
+  <a class="admin-link" href="login.php">Admin</a>
   <header class="hero">
     <div class="logo">SHOP<span>HUB</span></div>
     <p class="tag">รวมของเด็ดที่คัดมาแล้ว แยกเป็นหมวดให้เลือกง่าย กดเดียวถึงร้าน</p>

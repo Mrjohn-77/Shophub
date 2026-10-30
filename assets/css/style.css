@@ -110,3 +110,12 @@ table{background:var(--card);border:1px solid var(--line);border-radius:14px;ove
 th{color:var(--ink-soft);text-transform:uppercase;font-size:.74rem;letter-spacing:.5px}
 tr:hover td{background:rgba(255,255,255,0.04)}
 .ok,.price{color:var(--amber)}
+
+/* homepage admin link */
+.admin-link{
+  position:fixed;top:16px;right:18px;z-index:10;
+  background:rgba(255,255,255,0.08);border:1px solid var(--line);
+  color:var(--ink);font-size:.82rem;font-weight:600;
+  padding:7px 16px;border-radius:999px;text-decoration:none;backdrop-filter:blur(8px);
+}
+.admin-link:hover{background:var(--brand);color:#231007;border-color:transparent;text-decoration:none}
