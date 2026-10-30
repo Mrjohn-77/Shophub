@@ -45,5 +45,4 @@ while($row=mysqli_fetch_assoc($result)){ $grouped[$row['category']][]=$row; $tot
     </div>
   </section>
   <?php endforeach; ?>
-  <footer>SHOPHUB · Database Final Project · Mongkol Thongkam</footer>
 </div></body></html>
