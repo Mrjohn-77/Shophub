@@ -13,7 +13,12 @@ $T = [
 $t = $T[$lang];
 $other = $lang === 'en' ? 'th' : 'en';
 
-$sql = "SELECT p.id, p.name, p.price, p.image_url, c.name AS category, pl.name AS platform, COUNT(k.id) AS clicks
+// จุดตัดรอบวันคือ 04:00 น. (ก่อนตี 4 ยังนับเป็นของเมื่อวาน) คำนวณด้วยเวลาฝั่ง DB ทั้งหมด
+$cutoff = "CASE WHEN HOUR(NOW()) >= 4 THEN CONCAT(CURDATE(),' 04:00:00')
+                ELSE CONCAT(CURDATE() - INTERVAL 1 DAY, ' 04:00:00') END";
+$sql = "SELECT p.id, p.name, p.price, p.image_url, c.name AS category, pl.name AS platform,
+               COUNT(k.id) AS clicks,
+               SUM(CASE WHEN k.clicked_at >= ($cutoff) THEN 1 ELSE 0 END) AS day_clicks
         FROM products p
         JOIN categories c  ON p.category_id = c.id
         JOIN platforms pl  ON p.platform_id = pl.id
@@ -29,7 +34,7 @@ $popular = array_slice($all, 0, 10);
 function flame($cls='flame'){ return '<svg class="'.$cls.'" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 1.5c.3 3.2-2.8 4.6-3.6 7.3-.4-1-.3-2.4-1.3-3.1-.2 1.9-2.6 3.5-2.6 6.8a6 6 0 0 0 12 0c0-3.4-2.7-5.2-3.8-8.2-.6 1.7-1.9 1.9-1.9.2 0-1.3.6-2 1.2-3z" fill="url(#fg)"/></svg>'; }
 
 function card($p, $t){
-  $hot = (int)$p['clicks'] >= 3;
+  $hot = (int)($p['day_clicks'] ?? 0) >= 50;  // HOT = ยอดคลิกรายวัน (ตั้งแต่ตี 4) >= 50
   echo '<article class="card">';
   echo '<div class="thumb">';
   echo $p['image_url'] ? '<img src="'.h($p['image_url']).'" alt="'.h($p['name']).'">' : '<span class="noimg">No image</span>';
