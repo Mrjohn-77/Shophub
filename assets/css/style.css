@@ -110,3 +110,79 @@ table{background:var(--card);border:1px solid var(--line);border-radius:14px;ove
 th{color:var(--ink-soft);text-transform:uppercase;font-size:.74rem;letter-spacing:.5px}
 tr:hover td{background:rgba(255,255,255,0.04)}
 .ok,.price{color:var(--amber)}
+
+/* ===== Homepage v2: hero + horizontal shelves + topbar + animated HOT ===== */
+.topbar{position:fixed;top:14px;right:16px;z-index:20;display:flex;gap:8px}
+.topbar .pill{
+  background:rgba(255,255,255,0.10);border:1px solid var(--line);color:var(--ink);
+  font-size:.8rem;font-weight:700;padding:7px 15px;border-radius:999px;text-decoration:none;
+  backdrop-filter:blur(8px);transition:background .2s,color .2s}
+.topbar .pill:hover{background:var(--brand);color:#231007;border-color:transparent;text-decoration:none}
+
+.hero-banner{position:relative;padding:72px 18px 60px;text-align:center;
+  background:
+    radial-gradient(60% 120% at 20% 0%, rgba(255,106,61,0.38) 0%, transparent 55%),
+    radial-gradient(70% 120% at 85% 10%, rgba(255,61,129,0.42) 0%, transparent 55%),
+    radial-gradient(60% 120% at 60% 100%, rgba(124,77,255,0.40) 0%, transparent 60%),
+    linear-gradient(160deg,#241849 0%,#140a2e 100%);
+  border-bottom:1px solid var(--line);overflow:hidden}
+.hero-banner::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(1.5px 1.5px at 20% 30%,rgba(255,255,255,.7),transparent),
+            radial-gradient(1.5px 1.5px at 70% 20%,rgba(255,255,255,.6),transparent),
+            radial-gradient(2px 2px at 85% 60%,rgba(255,255,255,.6),transparent),
+            radial-gradient(1.5px 1.5px at 40% 70%,rgba(255,255,255,.6),transparent)}
+.hero-inner{position:relative;z-index:1}
+.hero-banner .logo{font-family:'Kanit',sans-serif;font-weight:800;font-size:4.4rem;line-height:1;color:#fff}
+.hero-banner .logo span{background:var(--brand);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-banner .tag{color:#d9d2f5;margin:16px auto 0;max-width:560px}
+
+.shelf{margin-top:38px}
+.shelf-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.shelf-head h2{display:flex;align-items:center;gap:8px;font-family:'Kanit',sans-serif;font-weight:700;font-size:1.4rem}
+.shelf-head h2 .dot{width:9px;height:24px;border-radius:6px;background:var(--brand)}
+.shelf-head .count{font-size:.8rem;color:var(--ink-soft);background:rgba(255,255,255,.06);padding:3px 11px;border-radius:999px}
+
+.row-wrap{position:relative}
+.row-scroll{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;scroll-behavior:smooth;scrollbar-width:none}
+.row-scroll::-webkit-scrollbar{display:none}
+.row-scroll .card{flex:0 0 230px;scroll-snap-align:start}
+
+.nav{position:absolute;top:calc(50% - 10px);transform:translateY(-50%);z-index:5;
+  width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(20,10,46,.85);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;
+  backdrop-filter:blur(6px);box-shadow:0 6px 18px rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+.nav:hover{background:var(--brand-solid);transform:translateY(-50%) scale(1.08)}
+.nav.prev{left:-10px}.nav.next{right:-10px}
+
+/* animated flame */
+.flame{display:inline-block;transform-origin:50% 90%;animation:flicker .45s ease-in-out infinite alternate}
+.flame-sm{width:15px;height:15px}
+.flame-lg{width:26px;height:26px;filter:drop-shadow(0 0 6px rgba(255,138,30,.6))}
+@keyframes flicker{
+  0%{transform:scale(1) rotate(-4deg);opacity:.9}
+  100%{transform:scale(1.2) rotate(4deg);opacity:1}
+}
+/* bigger HOT badge */
+.hot{display:inline-flex;align-items:center;gap:5px;font-size:.84rem;font-weight:800;letter-spacing:.5px;
+  padding:7px 13px 7px 10px;right:12px;top:12px;
+  box-shadow:0 4px 14px rgba(255,61,45,.45)}
+
+@media (max-width:560px){ .hero-banner{padding:52px 16px 44px} .hero-banner .logo{font-size:3rem} .nav{display:none} }
+
+/* embers rising from HOT badge on hover */
+.embers{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.embers i{position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;
+  background:radial-gradient(circle,#ffe79a 0%,#ff6a3d 70%,transparent 100%);opacity:0}
+.embers i:nth-child(1){left:22%}
+.embers i:nth-child(2){left:52%}
+.embers i:nth-child(3){left:80%}
+.card:hover .embers i{animation:ember 1.2s ease-out infinite}
+.card:hover .embers i:nth-child(2){animation-delay:.4s;width:3px;height:3px}
+.card:hover .embers i:nth-child(3){animation-delay:.8s}
+@keyframes ember{
+  0%{opacity:0;transform:translateY(0) scale(.7)}
+  25%{opacity:.85}
+  100%{opacity:0;transform:translateY(-24px) scale(.35)}
+}
+@media (prefers-reduced-motion: reduce){ .flame,.card:hover .embers i{animation:none} }
