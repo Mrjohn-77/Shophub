@@ -11,13 +11,13 @@ $T = [
            'items'=>'items','view'=>'View deal','clicks'=>'clicks','admin'=>'Admin','new'=>'NEW','home'=>'Home',
            'search_ph'=>'Search products...','all_cats'=>'All categories','min'=>'Min ฿','max'=>'Max ฿',
            'apply'=>'Search','clear'=>'Clear','results'=>'Results','found'=>'found','none'=>'No products match your search.',
-           'prev'=>'Prev','next'=>'Next',
+           'prev'=>'Prev','next'=>'Next','showcase'=>'Showcase',
            'sort_popular'=>'Most popular','sort_new'=>'Newest','sort_cheap'=>'Price: low to high','sort_exp'=>'Price: high to low'],
   'th' => ['tagline'=>'รวมของเด็ดที่คัดมาแล้ว แยกเป็นหมวดให้เลือกง่าย กดเดียวถึงร้าน','popular'=>'ยอดนิยม',
            'items'=>'ชิ้น','view'=>'ดูสินค้า','clicks'=>'คลิก','admin'=>'Admin','new'=>'ใหม่','home'=>'หน้าแรก',
            'search_ph'=>'ค้นหาสินค้า...','all_cats'=>'ทุกหมวด','min'=>'ราคาต่ำสุด','max'=>'ราคาสูงสุด',
            'apply'=>'ค้นหา','clear'=>'ล้าง','results'=>'ผลการค้นหา','found'=>'รายการ','none'=>'ไม่พบสินค้าที่ตรงกับเงื่อนไข',
-           'prev'=>'ก่อนหน้า','next'=>'ถัดไป',
+           'prev'=>'ก่อนหน้า','next'=>'ถัดไป','showcase'=>'โชว์เคส',
            'sort_popular'=>'ฮิตสุด','sort_new'=>'ใหม่ล่าสุด','sort_cheap'=>'ราคาถูกไปแพง','sort_exp'=>'ราคาแพงไปถูก'],
 ];
 $t = $T[$lang];
@@ -126,6 +126,7 @@ function sort_opt($val, $label, $cur){
 
 <div class="topbar">
   <a class="pill" href="<?= h(qlink(['lang'=>$other])) ?>"><?= strtoupper($other) ?></a>
+  <a class="pill" href="showcase.php?lang=<?= h($lang) ?>"><?= h($t['showcase']) ?></a>
   <a class="pill" href="login.php"><?= h($t['admin']) ?></a>
 </div>
 
