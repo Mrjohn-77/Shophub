@@ -231,3 +231,50 @@ tr:hover td{background:rgba(255,255,255,0.04)}
   .pd-title{font-size:1.8rem}
   .pd-price{font-size:2.1rem}
 }
+
+/* ===== Search / filter bar (index) ===== */
+.filterbar{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin:26px auto 0;max-width:860px}
+.filterbar input,.filterbar select{background:rgba(255,255,255,0.08);border:1px solid var(--line);color:var(--ink);
+  border-radius:12px;padding:11px 14px;font-family:inherit;font-size:.92rem;backdrop-filter:blur(8px)}
+.filterbar input::placeholder{color:#b9b2d8}
+.fb-search{flex:1 1 240px;min-width:180px}
+.fb-sel{flex:0 1 150px}
+.fb-num{width:110px}
+.fb-btn{background:var(--brand);color:#231007;font-weight:800;border:0;cursor:pointer;padding:11px 22px;border-radius:12px}
+.fb-btn:hover{filter:brightness(1.07)}
+.fb-clear{color:var(--ink-soft);align-self:center;font-size:.88rem;text-decoration:none}
+.fb-clear:hover{color:var(--ink)}
+
+/* NEW badge */
+.new-badge{position:absolute;left:12px;top:44px;background:#2bd4a7;color:#06281f;
+  font-size:.68rem;font-weight:800;letter-spacing:.5px;padding:4px 9px;border-radius:999px}
+
+/* category links in shelf heads */
+.cat-link{color:inherit;text-decoration:none;border-bottom:2px solid transparent;transition:border-color .2s}
+.cat-link:hover{border-color:var(--brand-solid);text-decoration:none}
+
+/* pagination */
+.pager{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:26px}
+.pager a{color:var(--ink);background:rgba(255,255,255,0.08);border:1px solid var(--line);
+  padding:9px 18px;border-radius:12px;text-decoration:none;font-weight:600}
+.pager a:hover{background:var(--brand);color:#231007;border-color:transparent;text-decoration:none}
+.pager-info{color:var(--ink-soft);font-size:.9rem}
+.empty{color:var(--ink-soft);text-align:center;padding:40px 0}
+
+/* category page toolbar */
+.cat-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+.sort-form{display:flex;align-items:center;gap:8px}
+.sort-form label{color:var(--ink-soft);font-weight:500;margin:0}
+.sort-form .fb-sel{background:rgba(255,255,255,0.08);border:1px solid var(--line);color:var(--ink);
+  border-radius:12px;padding:9px 12px;font-family:inherit;font-size:.9rem}
+
+/* ===== Dashboard (admin_stats) ===== */
+.ranklist{display:flex;flex-direction:column;gap:12px}
+.rankrow{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.rankrow:hover{text-decoration:none}
+.rankno{font-family:'Kanit',sans-serif;font-weight:800;color:var(--amber);min-width:34px}
+.rankname{flex:1 1 40%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.95rem}
+.rankname em{font-style:normal;color:var(--ink-soft);font-size:.78rem;margin-left:6px}
+.rankbarwrap{flex:1 1 30%;height:10px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden}
+.rankbar{display:block;height:100%;background:var(--brand);border-radius:999px}
+.rankc{font-weight:700;min-width:40px;text-align:right}

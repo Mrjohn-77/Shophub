@@ -1,6 +1,6 @@
 <?php
 require 'config/db.php';
-function h($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
+require 'partials.php';
 
 // --- language (EN default, TH optional) ---
 $lang = $_GET['lang'] ?? $_COOKIE['lang'] ?? 'en';
@@ -9,10 +9,12 @@ if (isset($_GET['lang'])) { setcookie('lang', $lang, time()+31536000, '/'); }
 $T = [
   'en' => ['back'=>'Back','store'=>'Go to store','clicks_total'=>'total clicks out',
            'today'=>'today','rank'=>'Rank','in'=>'in','why'=>'Why we picked it',
-           'trend'=>'Click-outs, last 7 days','related'=>'More in','admin'=>'Admin','home'=>'Home'],
+           'trend'=>'Click-outs, last 7 days','related'=>'More in','admin'=>'Admin','home'=>'Home',
+           'view'=>'View deal','clicks'=>'clicks','new'=>'NEW'],
   'th' => ['back'=>'ย้อนกลับ','store'=>'ไปที่ร้านค้า','clicks_total'=>'คนกดออกไปซื้อแล้ว',
            'today'=>'วันนี้','rank'=>'อันดับ','in'=>'ใน','why'=>'ทำไมเราเลือกตัวนี้',
-           'trend'=>'ยอดกดออก 7 วันล่าสุด','related'=>'ดูเพิ่มในหมวด','admin'=>'Admin','home'=>'หน้าแรก'],
+           'trend'=>'ยอดกดออก 7 วันล่าสุด','related'=>'ดูเพิ่มในหมวด','admin'=>'Admin','home'=>'หน้าแรก',
+           'view'=>'ดูสินค้า','clicks'=>'คลิก','new'=>'ใหม่'],
 ];
 $t = $T[$lang];
 $other = $lang === 'en' ? 'th' : 'en';
@@ -81,13 +83,13 @@ for ($i = 6; $i >= 0; $i--) {
 $maxc = max(1, max(array_column($days, 'c')));
 
 // --- related products: หมวดเดียวกัน ตัวอื่น เรียงยอดคลิกมากไปน้อย ---
-$relSql = "SELECT p.id, p.name, p.price, p.image_url, pl.name AS platform, COUNT(k.id) AS clicks,
+$relSql = "SELECT p.id, p.name, p.price, p.image_url, p.created_at, pl.name AS platform, COUNT(k.id) AS clicks,
                   SUM(CASE WHEN k.clicked_at >= ($cutoff) THEN 1 ELSE 0 END) AS day_clicks
            FROM products p
            JOIN platforms pl ON p.platform_id = pl.id
            LEFT JOIN clicks k ON k.product_id = p.id
            WHERE p.category_id = ? AND p.id <> ?
-           GROUP BY p.id, p.name, p.price, p.image_url, pl.name
+           GROUP BY p.id, p.name, p.price, p.image_url, p.created_at, pl.name
            ORDER BY clicks DESC, p.name
            LIMIT 12";
 $stmt = mysqli_prepare($conn, $relSql);
@@ -98,19 +100,6 @@ $related = [];
 while ($r = mysqli_fetch_assoc($res)) { $related[] = $r; }
 mysqli_stmt_close($stmt);
 
-function flame($cls='flame'){ return '<svg class="'.$cls.'" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 1.5c.3 3.2-2.8 4.6-3.6 7.3-.4-1-.3-2.4-1.3-3.1-.2 1.9-2.6 3.5-2.6 6.8a6 6 0 0 0 12 0c0-3.4-2.7-5.2-3.8-8.2-.6 1.7-1.9 1.9-1.9.2 0-1.3.6-2 1.2-3z" fill="url(#fg)"/></svg>'; }
-function relcard($p, $t){
-  $hot = (int)($p['day_clicks'] ?? 0) >= 10;
-  echo '<article class="card">';
-  echo '<div class="thumb">';
-  echo $p['image_url'] ? '<img src="'.h($p['image_url']).'" alt="'.h($p['name']).'">' : '<span class="noimg">No image</span>';
-  echo '<span class="chip">'.h($p['platform']).'</span>';
-  if ($hot) echo '<span class="hot"><span class="embers"><i></i><i></i><i></i></span>'.flame('flame-sm').'HOT</span>';
-  echo '</div><div class="body"><h3>'.h($p['name']).'</h3>';
-  echo '<div class="row"><span class="price">฿'.number_format((float)$p['price'],2).'</span><span class="clicks">'.(int)$p['clicks'].'</span></div>';
-  echo '<a class="btn" href="product.php?id='.(int)$p['id'].'">'.h($t['store']).' →</a>';
-  echo '</div></article>';
-}
 ?>
 <!doctype html><html lang="<?= $lang ?>"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= h($p['name']) ?> — SHOPHUB</title><link rel="stylesheet" href="assets/css/style.css"></head><body>
@@ -184,10 +173,10 @@ function relcard($p, $t){
 
   <?php if ($related): ?>
   <section class="shelf">
-    <div class="shelf-head"><h2><span class="dot"></span><?= h($t['related']) ?> <?= h($p['category']) ?></h2></div>
+    <div class="shelf-head"><h2><span class="dot"></span><?= h($t['related']) ?> <a class="cat-link" href="category.php?id=<?= (int)$p['category_id'] ?>&lang=<?= h($lang) ?>"><?= h($p['category']) ?></a></h2></div>
     <div class="row-wrap">
       <button class="nav prev" type="button" aria-label="prev">&lsaquo;</button>
-      <div class="row-scroll"><?php foreach ($related as $r) relcard($r,$t); ?></div>
+      <div class="row-scroll"><?php foreach ($related as $r) card($r,$t); ?></div>
       <button class="nav next" type="button" aria-label="next">&rsaquo;</button>
     </div>
   </section>

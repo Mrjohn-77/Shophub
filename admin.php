@@ -20,6 +20,7 @@ $result = mysqli_query($conn, $sql);
   <h2>จัดการสินค้า</h2>
   <div>
     <a class="btn" href="product_create.php">+ เพิ่มสินค้า</a>
+    <a href="admin_stats.php">Dashboard</a>
     <a href="index.php">หน้าแรก</a>
     <a href="manage_categories.php">จัดการหมวดหมู่</a>
     <a href="manage_admins.php">จัดการแอดมิน</a>
