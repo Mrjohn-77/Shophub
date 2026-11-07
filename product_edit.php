@@ -68,6 +68,6 @@ if (!$found) { http_response_code(404); exit('ไม่พบสินค้า'
   <p><label>ลิงก์ Affiliate</label><br><input name="affiliate_url" required value="<?= esc($url) ?>" style="width:100%;padding:10px"></p>
   <p><label>ทำไมเราเลือกตัวนี้ / คำอธิบาย (เว้นว่างได้)</label><br>
     <textarea name="blurb" rows="4" style="width:100%;padding:10px" placeholder="เช่น จุดเด่น เหมาะกับใคร คุ้มตรงไหน"><?= esc($blurb) ?></textarea></p>
-  <p><button class="btn" type="submit">บันทึกการแก้ไข</button> <a href="admin.php">ยกเลิก</a></p>
+  <p class="btnrow"><button class="btn btn-primary" type="submit">บันทึกการแก้ไข</button> <a class="btn btn-ghost" href="admin.php">ยกเลิก</a></p>
 </form>
 </div></body></html>

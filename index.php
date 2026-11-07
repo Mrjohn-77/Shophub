@@ -114,7 +114,15 @@ if ($resultsMode) {
 
 // map ชื่อหมวด -> id สำหรับลิงก์ไป category.php
 $catId = [];
-foreach ($cats as $c) $catId[$c['name']] = $c['id'];
+foreach ($cats as $c) $catId[$c['name']] = (int)$c['id'];
+
+// focus = หมวดที่กดมาจาก showcase → เอาขึ้นก่อน (filter ในตัว)
+$focus = filter_var($_GET['focus'] ?? '', FILTER_VALIDATE_INT) ?: 0;
+$focusName = '';
+if (!$resultsMode && $focus) {
+  $fn = array_search($focus, $catId, true);
+  if ($fn !== false && isset($grouped[$fn])) $focusName = $fn;
+}
 
 function sort_opt($val, $label, $cur){
   return '<option value="'.$val.'"'.($cur===$val?' selected':'').'>'.htmlspecialchars($label,ENT_QUOTES,'UTF-8').'</option>';
@@ -178,6 +186,20 @@ function sort_opt($val, $label, $cur){
   </section>
 
 <?php else: ?>
+  <?php if ($focusName): ?>
+  <section class="shelf shelf-focus">
+    <div class="shelf-head">
+      <h2><span class="dot"></span><?= h($focusName) ?> <span class="focus-tag"><?= $lang==='th'?'ที่คุณเลือก':'selected' ?></span></h2>
+      <span class="count"><?= count($grouped[$focusName]) ?> <?= h($t['items']) ?></span>
+    </div>
+    <div class="row-wrap">
+      <button class="nav prev" type="button" aria-label="prev">&lsaquo;</button>
+      <div class="row-scroll"><?php foreach ($grouped[$focusName] as $p) card($p, $t); ?></div>
+      <button class="nav next" type="button" aria-label="next">&rsaquo;</button>
+    </div>
+  </section>
+  <?php endif; ?>
+
   <?php if (!empty($popular)): ?>
   <section class="shelf">
     <div class="shelf-head"><h2><?= flame('flame-lg') ?><?= h($t['popular']) ?></h2></div>
@@ -189,7 +211,7 @@ function sort_opt($val, $label, $cur){
   </section>
   <?php endif; ?>
 
-  <?php foreach ($grouped as $category => $list): ?>
+  <?php foreach ($grouped as $category => $list): if ($category === $focusName) continue; ?>
   <section class="shelf">
     <div class="shelf-head">
       <h2><span class="dot"></span>

@@ -57,6 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <p><label>ลิงก์ Affiliate</label><br><input name="affiliate_url" required style="width:100%;padding:10px"></p>
   <p><label>ทำไมเราเลือกตัวนี้ / คำอธิบาย (เว้นว่างได้)</label><br>
     <textarea name="blurb" rows="4" style="width:100%;padding:10px" placeholder="เช่น จุดเด่น เหมาะกับใคร คุ้มตรงไหน"></textarea></p>
-  <p><button class="btn" type="submit">บันทึก</button> <a href="admin.php">ยกเลิก</a></p>
+  <p class="btnrow"><button class="btn btn-primary" type="submit">บันทึก</button> <a class="btn btn-ghost" href="admin.php">ยกเลิก</a></p>
 </form>
 </div></body></html>
