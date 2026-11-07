@@ -18,25 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = filter_var($_POST['price'] ?? '', FILTER_VALIDATE_FLOAT);
     $image = trim((string)($_POST['image_url'] ?? ''));
     $url   = trim((string)($_POST['affiliate_url'] ?? ''));
+    $blurb = trim((string)($_POST['blurb'] ?? ''));
 
     if (!$category_id || !$platform_id || $name === '' || $price === false || $url === '') {
         $error = 'กรอกข้อมูลให้ครบ';
     } else {
         $sql = 'UPDATE products
-                SET category_id = ?, platform_id = ?, name = ?, price = ?, image_url = ?, affiliate_url = ?
+                SET category_id = ?, platform_id = ?, name = ?, price = ?, image_url = ?, affiliate_url = ?, blurb = ?
                 WHERE id = ?';
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, 'iisdssi', $category_id, $platform_id, $name, $price, $image, $url, $id);
+        mysqli_stmt_bind_param($stmt, 'iisdsssi', $category_id, $platform_id, $name, $price, $image, $url, $blurb, $id);
         if (mysqli_stmt_execute($stmt)) { mysqli_stmt_close($stmt); header('Location: admin.php?ok=1'); exit; }
         $error = 'แก้ไขไม่สำเร็จ'; mysqli_stmt_close($stmt);
     }
 }
 
 // ดึงค่าปัจจุบันมาใส่ฟอร์ม
-$stmt = mysqli_prepare($conn, 'SELECT category_id, platform_id, name, price, image_url, affiliate_url FROM products WHERE id = ?');
+$stmt = mysqli_prepare($conn, 'SELECT category_id, platform_id, name, price, image_url, affiliate_url, blurb FROM products WHERE id = ?');
 mysqli_stmt_bind_param($stmt, 'i', $id);
 mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $cid, $pid, $name, $price, $image, $url);
+mysqli_stmt_bind_result($stmt, $cid, $pid, $name, $price, $image, $url, $blurb);
 $found = mysqli_stmt_fetch($stmt);
 mysqli_stmt_close($stmt);
 if (!$found) { http_response_code(404); exit('ไม่พบสินค้า'); }
@@ -65,6 +66,8 @@ if (!$found) { http_response_code(404); exit('ไม่พบสินค้า'
     </select></p>
   <p><label>ลิงก์รูปภาพ</label><br><input name="image_url" value="<?= esc($image) ?>" style="width:100%;padding:10px"></p>
   <p><label>ลิงก์ Affiliate</label><br><input name="affiliate_url" required value="<?= esc($url) ?>" style="width:100%;padding:10px"></p>
+  <p><label>ทำไมเราเลือกตัวนี้ / คำอธิบาย (เว้นว่างได้)</label><br>
+    <textarea name="blurb" rows="4" style="width:100%;padding:10px" placeholder="เช่น จุดเด่น เหมาะกับใคร คุ้มตรงไหน"><?= esc($blurb) ?></textarea></p>
   <p><button class="btn" type="submit">บันทึกการแก้ไข</button> <a href="admin.php">ยกเลิก</a></p>
 </form>
 </div></body></html>

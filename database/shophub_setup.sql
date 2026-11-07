@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS products (
   price DECIMAL(10,2) NOT NULL,
   image_url VARCHAR(500),
   affiliate_url VARCHAR(500) NOT NULL,
+  blurb TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES categories(id)
     ON DELETE RESTRICT ON UPDATE CASCADE,

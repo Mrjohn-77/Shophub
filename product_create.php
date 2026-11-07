@@ -16,14 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = filter_var($_POST['price'] ?? '', FILTER_VALIDATE_FLOAT);
     $image = trim((string)($_POST['image_url'] ?? ''));
     $url   = trim((string)($_POST['affiliate_url'] ?? ''));
+    $blurb = trim((string)($_POST['blurb'] ?? ''));
 
     if (!$category_id || !$platform_id || $name === '' || $price === false || $url === '') {
         $error = 'กรอกข้อมูลให้ครบ (ชื่อ ราคา หมวด ร้าน และลิงก์)';
     } else {
-        $sql = 'INSERT INTO products (category_id, platform_id, name, price, image_url, affiliate_url)
-                VALUES (?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO products (category_id, platform_id, name, price, image_url, affiliate_url, blurb)
+                VALUES (?, ?, ?, ?, ?, ?, ?)';
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, 'iisdss', $category_id, $platform_id, $name, $price, $image, $url);
+        mysqli_stmt_bind_param($stmt, 'iisdsss', $category_id, $platform_id, $name, $price, $image, $url, $blurb);
         if (mysqli_stmt_execute($stmt)) { mysqli_stmt_close($stmt); header('Location: admin.php?ok=1'); exit; }
         $error = 'บันทึกไม่สำเร็จ'; mysqli_stmt_close($stmt);
     }
@@ -54,6 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </select></p>
   <p><label>ลิงก์รูปภาพ (ใส่หรือเว้นว่างก็ได้)</label><br><input name="image_url" style="width:100%;padding:10px"></p>
   <p><label>ลิงก์ Affiliate</label><br><input name="affiliate_url" required style="width:100%;padding:10px"></p>
+  <p><label>ทำไมเราเลือกตัวนี้ / คำอธิบาย (เว้นว่างได้)</label><br>
+    <textarea name="blurb" rows="4" style="width:100%;padding:10px" placeholder="เช่น จุดเด่น เหมาะกับใคร คุ้มตรงไหน"></textarea></p>
   <p><button class="btn" type="submit">บันทึก</button> <a href="admin.php">ยกเลิก</a></p>
 </form>
 </div></body></html>
