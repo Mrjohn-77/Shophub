@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS products (
   platform_id INT NOT NULL,
   name VARCHAR(200) NOT NULL,
   price DECIMAL(10,2) NOT NULL,
-  image_url VARCHAR(500),
-  affiliate_url VARCHAR(500) NOT NULL,
+  image_url VARCHAR(2048),
+  affiliate_url VARCHAR(2048) NOT NULL,
   blurb TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES categories(id)
